@@ -43,6 +43,16 @@ on:
         required: true
         type: string
 
+      # build_image
+      job_build_image_runner_name:
+        description: 'Declare runner name to steps'
+        required: true
+        type: string
+      job_build_image_build_args:
+        description: 'Arguments of build to use'
+        required: true
+        type: string
+
 jobs:
   # Workflow reference => (NodeJS) Install deps and Lint
   install_deps:
@@ -72,7 +82,7 @@ jobs:
     name: "DevSecOps - Build Image"
     uses: ./.github/workflows/build-image.yml
     with:
-      reusable_runner_name: "${{ inputs.job_build_app_runner_name }}"
+      reusable_runner_name: "${{ inputs.job_build_image_runner_name }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
     needs:
       - build_app
