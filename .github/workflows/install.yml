@@ -38,6 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Verify value package manager
+        shell: bash
         run: |
           if [[ "${{ inputs.reusable_package_manager }}" == 'yarn' ]]; then
             echo "Install packages with Yarn..."
