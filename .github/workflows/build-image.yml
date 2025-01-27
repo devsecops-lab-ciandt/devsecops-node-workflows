@@ -9,10 +9,6 @@ on:
         description: 'Declare runner name to steps'
         required: true
         type: string
-      reusable_container_runner_image:
-        description: 'Declare container runner image to steps'
-        required: true
-        type: string
       reusable_package_manager:
         description: 'Declare the package manager as used, yarn or npm'
         required: true
@@ -24,7 +20,7 @@ jobs:
     name: Build container image
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
-      image: ${{ inputs.reusable_container_runner_image }}
+      image: quay.io/buildah/stable:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

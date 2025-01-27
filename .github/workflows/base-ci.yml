@@ -66,3 +66,13 @@ jobs:
       reusable_build_args: "${{ inputs.job_build_app_build_args }}"
     needs:
       - install_deps
+
+  # Workflow reference => (NodeJS) Build image
+  build_image:
+    name: "DevSecOps - Build Image"
+    uses: ./.github/workflows/build-image.yml
+    with:
+      reusable_runner_name: "${{ inputs.job_build_app_runner_name }}"
+      reusable_package_manager: "${{ inputs.globals_package_manager }}"
+    needs:
+      - build_app
