@@ -10,13 +10,17 @@ on:
         required: true
         type: string
       globals_package_manager:
-        description: 'Declare image runner to steps'
+        description: 'Declare the package manager as used, yarn or npm'
         required: true
         type: string
 
       # install_deps
       job_install_deps_runner_image:
-        description: 'Declare image runner to steps'
+        description: 'Declare runner image to steps'
+        required: true
+        type: string
+      job_install_deps_container_runner_image:
+        description: 'Declare container runner image to steps'
         required: true
         type: string
       job_install_deps_install_args:
@@ -27,7 +31,11 @@ on:
 
       # build_app
       job_build_app_runner_image:
-        description: 'Declare image runner to steps'
+        description: 'Declare runner image to steps'
+        required: true
+        type: string
+      job_build_app_container_runner_image:
+        description: 'Declare container runner image to steps'
         required: true
         type: string
       job_build_app_build_args:
@@ -42,6 +50,7 @@ jobs:
     uses: ./.github/workflows/install.yml
     with:
       reusable_runner_image: "${{ inputs.job_install_deps_runner_image }}"
+      reusable_container_runner_image: "${{ inputs.job_install_deps_container_runner_image }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
       reusable_node_version: "${{ inputs.globals_node_version }}"
 
@@ -51,6 +60,7 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       reusable_runner_image: "${{ inputs.job_build_app_runner_image }}"
+      reusable_container_runner_image: "${{ inputs.job_build_app_container_runner_image }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
       reusable_node_version: "${{ inputs.globals_node_version }}"
       reusable_build_args: "${{ inputs.job_build_app_build_args }}"
