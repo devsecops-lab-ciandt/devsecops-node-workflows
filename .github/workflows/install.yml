@@ -6,7 +6,7 @@ on:
   workflow_call:
     inputs:
       reusable_runner_name:
-        description: 'Declare runner image to steps'
+        description: 'Declare runner name to steps'
         required: true
         type: string
       reusable_container_runner_image:

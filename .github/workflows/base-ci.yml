@@ -15,8 +15,8 @@ on:
         type: string
 
       # install_deps
-      job_install_deps_runner_image:
-        description: 'Declare runner image to steps'
+      job_install_deps_runner_name:
+        description: 'Declare runner name to steps'
         required: true
         type: string
       job_install_deps_container_runner_image:
@@ -30,8 +30,8 @@ on:
         type: string
 
       # build_app
-      job_build_app_runner_image:
-        description: 'Declare runner image to steps'
+      job_build_app_runner_name:
+        description: 'Declare runner name to steps'
         required: true
         type: string
       job_build_app_container_runner_image:
@@ -49,7 +49,7 @@ jobs:
     name: "DevSecOps - Dependencies install"
     uses: ./.github/workflows/install.yml
     with:
-      reusable_runner_image: "${{ inputs.job_install_deps_runner_image }}"
+      reusable_runner_name: "${{ inputs.job_install_deps_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_install_deps_container_runner_image }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
       reusable_node_version: "${{ inputs.globals_node_version }}"
@@ -59,7 +59,7 @@ jobs:
     name: "DevSecOps - Build App"
     uses: ./.github/workflows/build.yml
     with:
-      reusable_runner_image: "${{ inputs.job_build_app_runner_image }}"
+      reusable_runner_name: "${{ inputs.job_build_app_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_build_app_container_runner_image }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
       reusable_node_version: "${{ inputs.globals_node_version }}"
