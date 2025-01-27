@@ -20,7 +20,7 @@ jobs:
     name: Build container image
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
-      image: quay.io/buildah/stable:latest
+      image: buildah/buildah:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
 
       - name: Build image
         run: |
-          buildah bud --isolation=chroot -t ${{ github.repository }}:latest .
+          buildah bud -t ${{ github.repository }}:latest .
   
       - name: Save image
         run: |
