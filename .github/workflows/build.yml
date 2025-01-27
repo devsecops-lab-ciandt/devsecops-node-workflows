@@ -6,7 +6,7 @@ on:
   workflow_call:
     inputs:
       reusable_runner_name:
-        description: 'Declare runner image to steps'
+        description: 'Declare runner name to steps'
         required: true
         type: string
       reusable_container_runner_image:
@@ -50,6 +50,24 @@ jobs:
         with:
           node-version: ${{ inputs.reusable_node_version }}
           cache: yarn
+
+      - name: Cache build (npm)
+        if: ${{ inputs.reusable_package_manager == 'npm' }}
+        uses: actions/cache@v4
+        with:
+          path: '**/build'
+          key: ${{ github.run_id }}-build-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.run_id }}-build-npm
+
+      - name: Cache build (yarn)
+        if: ${{ inputs.reusable_package_manager == 'yarn' }}
+        uses: actions/cache@v4
+        with:
+          path: '**/build'
+          key: ${{ github.run_id }}-build-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.run_id }}-build-yarn
 
       - name: Restore cache dependencies (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}
