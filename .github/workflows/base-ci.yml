@@ -39,12 +39,6 @@ on:
         required: true
         type: string
 
-      # build_image
-      job_build_image_build_args:
-        description: 'Arguments of build to use'
-        required: true
-        type: string
-
 jobs:
   # Workflow reference => (NodeJS) Install deps and Lint
   install_deps:

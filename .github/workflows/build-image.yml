@@ -25,6 +25,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache image
+        uses: actions/cache@v4
+        with:
+          path: '${{ github.repository }}.tar'
+          key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
+          restore-keys: |
+            ${{ github.repository }}-${{ github.ref }}-${{ github.run_id }}-
+
       - name: Restore cache build (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}
         uses: actions/cache@v4
@@ -50,11 +58,3 @@ jobs:
       - name: Save image
         run: |
           buildah push ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
-  
-      - name: Save Docker image as cache
-        uses: actions/cache@v4
-        with:
-          path: '${{ github.repository }}.tar'
-          key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.repository }}-${{ github.run_id }}-
