@@ -21,6 +21,7 @@ jobs:
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
       image: quay.io/buildah/stable:latest
+      options: --security-opt seccomp=unconfined --cap-add all
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -53,8 +54,8 @@ jobs:
 
       - name: Build image
         run: |
-          buildah bud --security-opt seccomp=unconfined --cap-add all -t ${{ github.repository }}:latest .
+          buildah bud -t ${{ github.repository }}:latest .
   
       - name: Save image
         run: |
-          buildah push --security-opt seccomp=unconfined --cap-add all ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
+          buildah push ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
