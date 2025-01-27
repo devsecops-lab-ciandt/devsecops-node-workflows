@@ -20,7 +20,7 @@ jobs:
     name: Build container image
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
-      image: alpine:3.14
+      image: quay.io/buildah/stable:latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -51,15 +51,10 @@ jobs:
           restore-keys: |
             ${{ github.ref }}-${{ github.run_id }}-build-yarn
 
-      - name: Buildah install
-        run: |
-          apk update
-          apk add buildah
-
       - name: Build image
         run: |
-          buildah bud --isolation chroot -t ${{ github.repository }}:latest .
+          buildah bud --security-opt seccomp=unconfined --cap-add all --isolation=chroot -t ${{ github.repository }}:latest .
   
       - name: Save image
         run: |
-          buildah push ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
+          buildah push --security-opt seccomp=unconfined --cap-add all --isolation=chroot ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
