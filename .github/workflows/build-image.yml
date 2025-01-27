@@ -20,7 +20,7 @@ jobs:
     name: Build container image
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
-      image: buildah/buildah:latest
+      image: alpine:3.14
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,6 +50,11 @@ jobs:
           key: ${{ github.run_id }}-build-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ github.ref }}-${{ github.run_id }}-build-yarn
+
+      - name: Buildah install
+        run: |
+          apk update
+          apk add buildah
 
       - name: Build image
         run: |
