@@ -1,0 +1,95 @@
+# Name workflow in pipeline
+name: (NodeJS) Install deps and Lint
+
+# Workflow sharing policy
+on:
+  workflow_call:
+    inputs:
+      reusable_runner_image:
+        description: 'Declare image runner to steps'
+        required: true
+        type: string
+      reusable_package_manager:
+        description: 'Declare the package manager as used, yarn or npm'
+        required: true
+        type: string
+      reusable_node_version:
+        description: 'Version of nodeJS to use'
+        required: true
+        type: string
+      reusable_install_args:
+        description: 'Arguments of install to use'
+        required: false
+        type: string
+
+jobs:
+  # Specific environment settings
+  reusable_config_environment:
+    name: "Configure environment"
+    runs-on: ${{ inputs.reusable_runner_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify value package manager
+        run: |
+          if [[ "${{ inputs.reusable_package_manager }}" == 'yarn' ]]; then
+            echo "Install packages with Yarn..."
+          elif [[ "${{ inputs.reusable_package_manager }}" == 'npm' ]]; then
+            echo "Install packages with npm..."
+          else
+            echo "Invalid package manager specified. Please use 'npm' or 'yarn'."
+            exit 1
+          fi
+
+  # Installation of dependencies for building the application
+  reusable_install_dependencies:
+    name: Node install dependencies
+    runs-on: ${{ inputs.reusable_runner_image }}
+    needs:
+      - reusable_config_environment
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: use node.js ${{ inputs.reusable_node_version }} (npm)
+        if: ${{ inputs.reusable_package_manager == 'npm' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.reusable_node_version }}
+          cache: npm
+
+      - name: use node.js ${{ inputs.reusable_node_version }} (yarn)
+        if: ${{ inputs.reusable_package_manager == 'yarn' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.reusable_node_version }}
+          cache: yarn
+
+      - name: Cache dependencies (npm)
+        if: ${{ inputs.reusable_package_manager == 'npm' }}
+        uses: actions/cache@v4
+        id: npm-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ github.run_id }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.run_id }}-npm-
+
+      - name: Cache dependencies (yarn)
+        if: ${{ inputs.reusable_package_manager == 'yarn' }}
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ github.run_id }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ github.ref }}-${{ github.run_id }}-yarn-
+
+      - name: Install dependencies (npm)
+        if: ${{ inputs.reusable_package_manager == 'npm' }}
+        run: "npm install ${{ inputs.reusable_install_args }}"
+
+      - name: Install dependencies (yarn)
+        if: ${{ inputs.reusable_package_manager == 'yarn' }}
+        run: "yarn install ${{ inputs.reusable_install_args }}"
