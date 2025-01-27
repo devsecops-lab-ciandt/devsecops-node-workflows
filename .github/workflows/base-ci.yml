@@ -40,28 +40,28 @@ on:
         type: string
 
 jobs:
-  # Workflow reference => (NodeJS) Install deps and Lint
-  install_deps:
-    name: "DevSecOps - Dependencies install"
-    uses: ./.github/workflows/install.yml
-    with:
-      reusable_runner_name: "${{ inputs.globals_runner_name }}"
-      reusable_container_runner_image: "${{ inputs.job_install_deps_container_runner_image }}"
-      reusable_package_manager: "${{ inputs.globals_package_manager }}"
-      reusable_node_version: "${{ inputs.globals_node_version }}"
+  # # Workflow reference => (NodeJS) Install deps and Lint
+  # install_deps:
+  #   name: "DevSecOps - Dependencies install"
+  #   uses: ./.github/workflows/install.yml
+  #   with:
+  #     reusable_runner_name: "${{ inputs.globals_runner_name }}"
+  #     reusable_container_runner_image: "${{ inputs.job_install_deps_container_runner_image }}"
+  #     reusable_package_manager: "${{ inputs.globals_package_manager }}"
+  #     reusable_node_version: "${{ inputs.globals_node_version }}"
 
-  # Workflow reference => (NodeJS) Build app
-  build_app:
-    name: "DevSecOps - Build App"
-    uses: ./.github/workflows/build.yml
-    with:
-      reusable_runner_name: "${{ inputs.globals_runner_name }}"
-      reusable_container_runner_image: "${{ inputs.job_build_app_container_runner_image }}"
-      reusable_package_manager: "${{ inputs.globals_package_manager }}"
-      reusable_node_version: "${{ inputs.globals_node_version }}"
-      reusable_build_args: "${{ inputs.job_build_app_build_args }}"
-    needs:
-      - install_deps
+  # # Workflow reference => (NodeJS) Build app
+  # build_app:
+  #   name: "DevSecOps - Build App"
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     reusable_runner_name: "${{ inputs.globals_runner_name }}"
+  #     reusable_container_runner_image: "${{ inputs.job_build_app_container_runner_image }}"
+  #     reusable_package_manager: "${{ inputs.globals_package_manager }}"
+  #     reusable_node_version: "${{ inputs.globals_node_version }}"
+  #     reusable_build_args: "${{ inputs.job_build_app_build_args }}"
+  #   needs:
+  #     - install_deps
 
   # Workflow reference => (NodeJS) Build image
   build_image:
@@ -70,5 +70,5 @@ jobs:
     with:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
-    needs:
-      - build_app
+    # needs:
+    #   - build_app
