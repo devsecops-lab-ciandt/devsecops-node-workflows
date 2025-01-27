@@ -53,8 +53,8 @@ jobs:
 
       - name: Build image
         run: |
-          buildah bud --security-opt seccomp=unconfined --cap-add all --isolation=chroot -t ${{ github.repository }}:latest .
+          buildah bud --security-opt seccomp=unconfined --cap-add all -t ${{ github.repository }}:latest .
   
       - name: Save image
         run: |
-          buildah push --security-opt seccomp=unconfined --cap-add all --isolation=chroot ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
+          buildah push --security-opt seccomp=unconfined --cap-add all ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
