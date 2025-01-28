@@ -43,7 +43,7 @@ jobs:
   # Workflow reference => (NodeJS) Install deps and Lint
   install_deps:
     name: "DevSecOps - Dependencies install"
-    uses: ./.github/workflows/install.yml
+    uses: ./.github/workflows-templates/install.yml
     with:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_install_deps_container_runner_image }}"
@@ -53,7 +53,7 @@ jobs:
   # Workflow reference => (NodeJS) Build app
   build_app:
     name: "DevSecOps - Build App"
-    uses: ./.github/workflows/build.yml
+    uses: ./.github/workflows-templates/build.yml
     with:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_build_app_container_runner_image }}"
@@ -66,7 +66,7 @@ jobs:
   # Workflow reference => (NodeJS) Build image
   build_image:
     name: "DevSecOps - Build Image"
-    uses: ./.github/workflows/build-image.yml
+    uses: ./.github/workflows-templates/build-image.yml
     with:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_package_manager: "${{ inputs.globals_package_manager }}"
