@@ -45,12 +45,12 @@ jobs:
 
       - name: Build image
         run: |
-          buildah --storage-driver vfs bud --format docker -t my-image:latest .
+          buildah --storage-driver vfs bud --format docker -t ${{ github.repository }}:latest .
 
       - name: List images
         run: |
           buildah --storage-driver vfs images
 
-      # - name: Save image
-      #   run: |
-      #     buildah push --storage-driver vfs localhost/my-image:latest oci-archive:my-image.tar
+      - name: Save image
+        run: |
+          buildah push --storage-driver vfs localhost/${{ github.repository }}:latest oci-archive:image-app.tar
