@@ -3,6 +3,7 @@ name: (NodeJS) Build app
 
 # Workflow sharing policy
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       reusable_runner_name:
