@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: '**/build'
-          key: ${{ github.run_id }}-build-npm-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ github.run_id }}-build-npm-${{ github.sha }}
           restore-keys: |
             ${{ github.ref }}-${{ github.run_id }}-build-npm
 
@@ -48,9 +48,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: '**/build'
-          key: ${{ github.run_id }}-build-yarn-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ github.run_id }}-build-yarn-${{ github.sha }}
           restore-keys: |
             ${{ github.ref }}-${{ github.run_id }}-build-yarn
+
+      - name: List cache build
+        run: |
+          ls -lha
 
       - name: Build image
         run: |
