@@ -2,7 +2,9 @@ name: (NodeJS) pipeline base CI
 
 # Policies run job in branches
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'branch-not-exist'
   workflow_call:
     inputs:
       # Globals

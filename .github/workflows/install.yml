@@ -3,7 +3,9 @@ name: (NodeJS) Install deps and Lint
 
 # Workflow sharing policy
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'branch-not-exist'
   workflow_call:
     inputs:
       reusable_runner_name:
