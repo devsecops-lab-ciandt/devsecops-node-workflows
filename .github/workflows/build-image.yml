@@ -39,6 +39,10 @@ jobs:
         with:
           name: ${{ github.run_id }}-build-${{ github.sha }}
 
+      - name: Extract build (npm)
+        run: |
+          tar -xzf build.tar.gz
+
       - name: Build image
         run: |
           buildah --storage-driver vfs bud --format docker -t my-image:latest .
