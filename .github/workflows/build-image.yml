@@ -47,10 +47,14 @@ jobs:
         run: |
           buildah --storage-driver vfs bud --format docker -t ${{ github.repository }}:latest .
 
-      - name: List images
-        run: |
-          buildah --storage-driver vfs images
-
       - name: Save image
         run: |
           buildah push --storage-driver vfs localhost/${{ github.repository }}:latest oci-archive:image-app.tar
+          ls -lha
+
+      - name: Upload artifact image
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.run_id }}-image-${{ github.sha }}
+          path: image-app.tar
+          retention-days: 1
