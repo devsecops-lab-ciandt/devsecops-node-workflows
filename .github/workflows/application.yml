@@ -1,0 +1,25 @@
+name: (NodeJS) Update application
+
+# Policies run job in branches
+on:
+  workflow_call:
+    inputs:
+      reusable_runner_name:
+        description: 'Declare runner name to steps'
+        required: true
+        type: string
+      reusable_container_runner_image:
+        description: 'Declare container runner image to steps'
+        required: true
+        type: string
+
+jobs:
+  # Clean and checkout repositories. Clean workspace is enabled by default
+  reusable_update_application:
+    name: Update application
+    runs-on: ${{ inputs.reusable_runner_name }}
+    container:
+      image: ${{ inputs.reusable_container_runner_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4

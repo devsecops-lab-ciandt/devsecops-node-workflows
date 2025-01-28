@@ -3,9 +3,6 @@ name: (NodeJS) Build app
 
 # Workflow sharing policy
 on:
-  push:
-    branches:
-      - 'branch-not-exist'
   workflow_call:
     inputs:
       reusable_runner_name:
