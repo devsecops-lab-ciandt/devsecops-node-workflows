@@ -54,7 +54,7 @@ jobs:
 
       - name: Build image
         run: |
-          buildah bud -t my-image:latest .
+          buildah bud --format docker -t my-image:latest .
   
       - name: Save image
         run: |

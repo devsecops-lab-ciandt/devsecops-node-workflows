@@ -1,0 +1,19 @@
+# Name workflow in pipeline
+name: (NodeJS) Validate DevSecOps template
+
+# Workflow sharing policy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # Clean and checkout repositories. Clean workspace is enabled by default
+  reusable_build_app:
+    name: Code build
+    runs-on: ${{ env.runner_name }}
+    container:
+      image: ${{ env.container_runner_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
