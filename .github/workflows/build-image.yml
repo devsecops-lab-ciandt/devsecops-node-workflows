@@ -26,40 +26,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache image
-        uses: actions/cache@v4
-        with:
-          path: 'my-image.tar'
-          key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
-          restore-keys: |
-            ${{ github.repository }}-${{ github.ref }}-${{ github.run_id }}-
+      # - name: Cache image
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: 'my-image.tar'
+      #     key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ github.repository }}-${{ github.ref }}-${{ github.run_id }}-
 
-      - name: Restore cache build (npm)
-        if: ${{ inputs.reusable_package_manager == 'npm' }}
-        uses: actions/cache@v4
+      - name: Download artifact build
+        uses: actions/download-artifact@v3
         with:
-          path: '**/build'
-          key: ${{ github.run_id }}-build-npm-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.run_id }}-build-npm
+          name: ${{ github.run_id }}-build-${{ github.sha }}
 
-      - name: Restore cache build (yarn)
-        if: ${{ inputs.reusable_package_manager == 'yarn' }}
-        uses: actions/cache@v4
-        with:
-          path: '**/build'
-          key: ${{ github.run_id }}-build-yarn-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.run_id }}-build-yarn
+      - name: Extract build (npm)
+        run: |
+          tar -xzf build.tar.gz
 
       - name: List cache build
         run: |
           ls -lha
 
-      - name: Build image
-        run: |
-          buildah --storage-driver vfs bud --format docker -t my-image:latest .
+      # - name: Build image
+      #   run: |
+      #     buildah --storage-driver vfs bud --format docker -t my-image:latest .
   
-      - name: Save image
-        run: |
-          buildah push my-image:latest oci-archive:my-image.tar
+      # - name: Save image
+      #   run: |
+      #     buildah push my-image:latest oci-archive:my-image.tar

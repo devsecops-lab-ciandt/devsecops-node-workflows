@@ -51,24 +51,6 @@ jobs:
           node-version: ${{ inputs.reusable_node_version }}
           cache: yarn
 
-      - name: Cache build (npm)
-        if: ${{ inputs.reusable_package_manager == 'npm' }}
-        uses: actions/cache@v4
-        with:
-          path: '**/build'
-          key: ${{ github.run_id }}-build-npm-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.run_id }}-build-npm
-
-      - name: Cache build (yarn)
-        if: ${{ inputs.reusable_package_manager == 'yarn' }}
-        uses: actions/cache@v4
-        with:
-          path: '**/build'
-          key: ${{ github.run_id }}-build-yarn-${{ github.sha }}
-          restore-keys: |
-            ${{ github.ref }}-${{ github.run_id }}-build-yarn
-
       - name: Restore cache dependencies (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}
         uses: actions/cache@v4
@@ -89,8 +71,19 @@ jobs:
 
       - name: Build (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}
-        run: "npm ${{ inputs.reusable_build_args }}"
+        run: |
+          "npm ${{ inputs.reusable_build_args }}"
+          tar -czf build.tar.gz build
 
       - name: Build (yarn)
         if: ${{ inputs.reusable_package_manager == 'yarn' }}
-        run: "yarn ${{ inputs.reusable_build_args }}"
+        run: |
+          "yarn ${{ inputs.reusable_build_args }}"
+          tar -czf build.tar.gz build
+
+      - name: Upload artifact build
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ github.run_id }}-build-${{ github.sha }}
+          path: build.tar.gz
+          retention-days: 1
