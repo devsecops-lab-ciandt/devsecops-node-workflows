@@ -46,7 +46,11 @@ jobs:
       - name: Build image
         run: |
           buildah --storage-driver vfs bud --format docker -t my-image:latest .
-  
-      - name: Save image
+
+      - name: List images
         run: |
-          buildah push my-image:latest oci-archive:my-image.tar
+          buildah images
+  
+      # - name: Save image
+      #   run: |
+      #     buildah push my-image:latest oci-archive:my-image.tar
