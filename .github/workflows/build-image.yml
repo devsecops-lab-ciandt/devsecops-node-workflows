@@ -49,8 +49,8 @@ jobs:
 
       - name: List images
         run: |
-          buildah images
-  
+          buildah --storage-driver vfs images
+
       # - name: Save image
       #   run: |
-      #     buildah push my-image:latest oci-archive:my-image.tar
+      #     buildah push --storage-driver vfs localhost/my-image:latest oci-archive:my-image.tar
