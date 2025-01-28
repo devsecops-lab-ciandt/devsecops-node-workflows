@@ -29,7 +29,7 @@ jobs:
       - name: Cache image
         uses: actions/cache@v4
         with:
-          path: '${{ github.repository }}.tar'
+          path: 'my-image.tar'
           key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
           restore-keys: |
             ${{ github.repository }}-${{ github.ref }}-${{ github.run_id }}-
@@ -54,8 +54,8 @@ jobs:
 
       - name: Build image
         run: |
-          buildah bud -t ${{ github.repository }}:latest .
+          buildah bud -t my-image:latest .
   
       - name: Save image
         run: |
-          buildah push ${{ github.repository }}:latest oci-archive:${{ github.repository }}.tar
+          buildah push my-image:latest oci-archive:my-image.tar
