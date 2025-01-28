@@ -82,7 +82,7 @@ jobs:
           tar -czf build.tar.gz build
 
       - name: Upload artifact build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}-build-${{ github.sha }}
           path: build.tar.gz

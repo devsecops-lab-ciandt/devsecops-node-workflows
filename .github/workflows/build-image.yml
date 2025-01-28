@@ -26,16 +26,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Cache image
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: 'my-image.tar'
-      #     key: ${{ github.repository }}-${{ github.run_id }}-${{ github.sha }}
-      #     restore-keys: |
-      #       ${{ github.repository }}-${{ github.ref }}-${{ github.run_id }}-
-
       - name: Download artifact build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.run_id }}-build-${{ github.sha }}
 
@@ -50,10 +42,9 @@ jobs:
       - name: Save image
         run: |
           buildah push --storage-driver vfs localhost/${{ github.repository }}:latest oci-archive:image-app.tar
-          ls -lha
 
       - name: Upload artifact image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
           path: image-app.tar
