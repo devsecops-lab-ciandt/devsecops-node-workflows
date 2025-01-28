@@ -39,18 +39,10 @@ jobs:
         with:
           name: ${{ github.run_id }}-build-${{ github.sha }}
 
-      - name: Extract build (npm)
+      - name: Build image
         run: |
-          tar -xzf build.tar.gz
-
-      - name: List cache build
-        run: |
-          ls -lha
-
-      # - name: Build image
-      #   run: |
-      #     buildah --storage-driver vfs bud --format docker -t my-image:latest .
+          buildah --storage-driver vfs bud --format docker -t my-image:latest .
   
-      # - name: Save image
-      #   run: |
-      #     buildah push my-image:latest oci-archive:my-image.tar
+      - name: Save image
+        run: |
+          buildah push my-image:latest oci-archive:my-image.tar
