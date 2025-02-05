@@ -36,7 +36,11 @@ jobs:
           version: v3.16.3
 
       - name: Helm lint
-        run: helm lint ./app-sample
+        run: |
+          ls -lha
+          echo "---------------"
+          ls -lha ./app-sample/
+          helm lint ./app-sample
 
       - name: Package Helm chart
         run: helm package ./app-sample
