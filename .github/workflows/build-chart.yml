@@ -41,13 +41,9 @@ jobs:
       - name: Package Helm chart
         run: helm package ./chart-template/app-sample
 
-      - name: List directories
-        run: |
-          ls -lha
-
-      # - name: Upload artifact chart
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: ${{ github.run_id }}-chart-${{ github.sha }}
-      #     path: 
-      #     retention-days: 1
+      - name: Upload artifact chart
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.run_id }}-chart-${{ github.sha }}
+          path: app-sample-0.1.0.tgz
+          retention-days: 1
