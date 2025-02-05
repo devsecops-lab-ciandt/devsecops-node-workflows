@@ -40,10 +40,10 @@ jobs:
           ls -lha
           echo "---------------"
           ls -lha ./app-sample/
-          helm lint ./app-sample
+          helm lint ./helm-charts/app-sample
 
       - name: Package Helm chart
-        run: helm package ./app-sample
+        run: helm package ./helm-charts/app-sample
 
       - name: List directories
         run: |
