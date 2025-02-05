@@ -23,3 +23,18 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Checkout Helm template repository
+        uses: actions/checkout@v4
+        with:
+          repository: devsecops-lab-ciandt/helm-charts
+          path: app-sample
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.16.3
+  
+      - name: List directories
+        run: |
+          ls -lha
