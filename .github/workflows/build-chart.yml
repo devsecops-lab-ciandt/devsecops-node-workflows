@@ -40,6 +40,7 @@ jobs:
           ls -lha
           echo "---------------"
           ls -lha ./chart-template/
+          ls -lha ./chart-template/app-sample/
           helm lint ./helm-charts/app-sample
 
       - name: Package Helm chart
