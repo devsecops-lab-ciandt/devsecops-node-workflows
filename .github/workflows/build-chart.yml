@@ -34,7 +34,13 @@ jobs:
         uses: azure/setup-helm@v4
         with:
           version: v3.16.3
-  
+
+      - name: Helm lint
+        run: helm lint ./app-sample
+
+      - name: Package Helm chart
+        run: helm package ./app-sample
+
       - name: List directories
         run: |
           ls -lha
