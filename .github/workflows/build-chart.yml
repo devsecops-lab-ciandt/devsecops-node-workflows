@@ -36,15 +36,10 @@ jobs:
           version: v3.16.3
 
       - name: Helm lint
-        run: |
-          ls -lha
-          echo "---------------"
-          ls -lha ./chart-template/
-          ls -lha ./chart-template/app-sample/
-          helm lint ./helm-charts/app-sample
+        run: helm lint ./chart-template/app-sample
 
       - name: Package Helm chart
-        run: helm package ./helm-charts/app-sample
+        run: helm package ./chart-template/app-sample
 
       - name: List directories
         run: |
