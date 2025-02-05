@@ -39,7 +39,7 @@ jobs:
         run: |
           ls -lha
           echo "---------------"
-          ls -lha ./app-sample/
+          ls -lha ./chart-template/
           helm lint ./helm-charts/app-sample
 
       - name: Package Helm chart
@@ -48,3 +48,10 @@ jobs:
       - name: List directories
         run: |
           ls -lha
+
+      # - name: Upload artifact chart
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ github.run_id }}-chart-${{ github.sha }}
+      #     path: 
+      #     retention-days: 1
