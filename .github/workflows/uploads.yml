@@ -38,7 +38,7 @@ jobs:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
       - name: Docker login
-        run: docker login ${{ inputs.reusable_docker_registry_nexus_url }} -u ${{ secrets.NEXUS_DOCKER_USERNAME }} -p ${{ secrets.NEXUS_DOCKER_PASSWORD }}
+        run: docker login ${{ inputs.reusable_docker_registry_nexus_url }} -u teste -p teste123
 
       - name: Debug Environment Variables
         run: env
