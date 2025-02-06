@@ -12,14 +12,14 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
-      # reusable_docker_registry_nexus_url:
-      #   description: 'Private Docker registry Url'
-      #   required: true
-      #   type: string
-      # reusable_helm_nexus_repository_url:
-      #   description: 'Private Helm repository Url'
-      #   required: true
-      #   type: string
+      reusable_docker_registry_nexus_url:
+        description: 'Private Docker registry Url'
+        required: true
+        type: string
+      reusable_nexus_repository_helm_url:
+        description: 'Private Helm repository Url'
+        required: true
+        type: string
 
 jobs:
 
@@ -37,8 +37,27 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      - name: List artifact
-        run: ls -lha  
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.reusable_docker_registry_nexus_url }}
+          username: ${{ secrets.NEXUS_DOCKER_USERNAME }}
+          password: ${{ secrets.NEXUS_DOCKER_PASSWORD }}
+
+      - name: Load Docker image
+        run: docker load -i ./image-app.tar
+
+      - name: Load Docker image
+        run: docker image ls
+
+      # - name: Tag Docker image
+      #   run: docker tag ${{ github.repository }}:latest ${{ inputs.reusable_docker_registry_nexus_url }}/${{ github.repository }}:latest
+
+      # - name: Push Docker image to Nexus
+      #   run: docker push ${{ inputs.reusable_docker_registry_nexus_url }}/${{ github.repository }}:latest
       
   reusable_upload_helm_chart_package:
     name: Upload helm chart package
@@ -54,9 +73,18 @@ jobs:
         with:
           name: ${{ github.run_id }}-chart-${{ github.sha }}
 
-      - name: List artifact
-        run: ls -lha  
+      - name: Validate URL
+        run: |
+          URL="${{ inputs.reusable_nexus_repository_helm_url }}"
+          STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" "$URL")
+          echo "Status code: $STATUS_CODE"
+          if [ "$STATUS_CODE" -eq 200 ]; then
+            echo "Comunicação bem-sucedida!"
+          else
+            echo "Falha na comunicação. Status code: $STATUS_CODE"
+            exit 1
+            fi
 
       # - name: Upload package to Nexus Sonatype
       #   run: |
-      #     curl -v -u ${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }} --upload-file ./app-sample-0.1.0.tgz ${{ inputs.reusable_helm_nexus_repository_url }}"/app-sample-0.1.0.tgz"
+      #     curl -v -u ${{ secrets.NEXUS_HELM_USERNAME }}:${{ secrets.NEXUS_HELM_PASSWORD }} --upload-file ./app-sample-0.1.0.tgz ${{ inputs.reusable_nexus_repository_helm_url }}"/app-sample-0.1.0.tgz"
