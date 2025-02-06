@@ -56,31 +56,31 @@ jobs:
       # - name: Push Docker image to Nexus
       #   run: docker push ${{ inputs.reusable_docker_registry_nexus_url }}/${{ github.repository }}:latest
       
-  reusable_upload_helm_chart_package:
-    name: Upload helm chart package
-    runs-on: ${{ inputs.reusable_runner_name }}
-    container:
-      image: ${{ inputs.reusable_container_runner_image }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  # reusable_upload_helm_chart_package:
+  #   name: Upload helm chart package
+  #   runs-on: ${{ inputs.reusable_runner_name }}
+  #   container:
+  #     image: ${{ inputs.reusable_container_runner_image }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Download artifact chart
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{ github.run_id }}-chart-${{ github.sha }}
+  #     - name: Download artifact chart
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ${{ github.run_id }}-chart-${{ github.sha }}
 
-      - name: Validate URL
-        run: |
-          URL="${{ inputs.reusable_nexus_repository_helm_url }}"
-          STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" "$URL")
-          echo "Status code: $STATUS_CODE"
-          if [ "$STATUS_CODE" -eq 200 ]; then
-            echo "Comunicação bem-sucedida!"
-          else
-            echo "Falha na comunicação. Status code: $STATUS_CODE"
-            exit 1
-            fi
+  #     - name: Validate URL
+  #       run: |
+  #         URL="${{ inputs.reusable_nexus_repository_helm_url }}"
+  #         STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" "$URL")
+  #         echo "Status code: $STATUS_CODE"
+  #         if [ "$STATUS_CODE" -eq 200 ]; then
+  #           echo "Comunicação bem-sucedida!"
+  #         else
+  #           echo "Falha na comunicação. Status code: $STATUS_CODE"
+  #           exit 1
+  #           fi
 
       # - name: Upload package to Nexus Sonatype
       #   run: |
