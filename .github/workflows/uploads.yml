@@ -37,7 +37,7 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      - name: Set up Docker Buildx
+      - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
       - name: Login Docker Registry
