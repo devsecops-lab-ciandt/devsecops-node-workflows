@@ -37,12 +37,15 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      - name: Login Docker Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ inputs.reusable_docker_registry_nexus_url }}
-          username: ${{ secrets.NEXUS_DOCKER_USERNAME }}
-          password: ${{ secrets.NEXUS_DOCKER_PASSWORD }}
+      - name: Docker login
+        run: docker login ${{ inputs.reusable_docker_registry_nexus_url }} -u ${{ secrets.NEXUS_DOCKER_USERNAME }} -p ${{ secrets.NEXUS_DOCKER_PASSWORD }}
+
+      # - name: Login Docker Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: ${{ inputs.reusable_docker_registry_nexus_url }}
+      #     username: ${{ secrets.NEXUS_DOCKER_USERNAME }}
+      #     password: ${{ secrets.NEXUS_DOCKER_PASSWORD }}
 
       - name: Load Docker image
         run: docker load -i ./image-app.tar
