@@ -1,4 +1,4 @@
-name: (NodeJS) Upload artifacts
+name: (NodeJS) Push Image and upload Artifacts
 
 # Policies run job in branches
 on:
@@ -12,14 +12,51 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
+      # reusable_docker_registry_nexus_url:
+      #   description: 'Private Docker registry Url'
+      #   required: true
+      #   type: string
+      # reusable_helm_nexus_repository_url:
+      #   description: 'Private Helm repository Url'
+      #   required: true
+      #   type: string
 
 jobs:
-  # Clean and checkout repositories. Clean workspace is enabled by default
-  reusable_upload_artifacts:
-    name: Upload artifacts
+
+  reusable_push_image_container:
+    name: Push container image
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
       image: ${{ inputs.reusable_container_runner_image }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Download artifact image
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.run_id }}-image-${{ github.sha }}
+
+      - name: List artifact
+        run: ls -lha  
+      
+  reusable_upload_helm_chart_package:
+    name: Upload helm chart package
+    runs-on: ${{ inputs.reusable_runner_name }}
+    container:
+      image: ${{ inputs.reusable_container_runner_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download artifact chart
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.run_id }}-chart-${{ github.sha }}
+
+      - name: List artifact
+        run: ls -lha  
+
+      # - name: Upload package to Nexus Sonatype
+      #   run: |
+      #     curl -v -u ${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }} --upload-file ./app-sample-0.1.0.tgz ${{ inputs.reusable_helm_nexus_repository_url }}"/app-sample-0.1.0.tgz"
