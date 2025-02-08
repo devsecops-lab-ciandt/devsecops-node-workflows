@@ -32,15 +32,16 @@ jobs:
       - name: Debug Environment Variables
         run: env
 
-      # - name: Docker login
-      #   run: docker login ${{ inputs.reusable_docker_registry_nexus_url }} -u -p
+      - name: Docker login
+        run: docker login acrdemoarc.azurecr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
-      - name: Login Docker Registry
-        uses: docker/login-action@v3
-        with:
-          registry: acrdemoarc.azurecr.io
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      # - name: Login Docker Registry
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: acrdemoarc.azurecr.io
+      #     username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      #     password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      #     logout: true
 
       - name: Load Docker image
         run: docker load -i ./image-app.tar
