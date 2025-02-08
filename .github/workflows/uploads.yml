@@ -33,7 +33,7 @@ jobs:
         run: env
 
       - name: Docker login
-        run: docker login acrdemoarc.azurecr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} -p ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+        run: echo ${{ secrets.DOCKER_REGISTRY_PASSWORD }} | docker login acrdemoarc.azurecr.io -u ${{ secrets.DOCKER_REGISTRY_USERNAME }} --password-stdin
 
       # - name: Login Docker Registry
       #   uses: docker/login-action@v3
