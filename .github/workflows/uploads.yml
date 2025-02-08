@@ -12,14 +12,6 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
-      reusable_docker_registry_nexus_url:
-        description: 'Private Docker registry Url'
-        required: true
-        type: string
-      reusable_nexus_repository_helm_url:
-        description: 'Private Helm repository Url'
-        required: true
-        type: string
 
 env:
   NEXUS_DOCKER_USERNAME: ${{ secrets.NEXUS_DOCKER_USERNAME }}
