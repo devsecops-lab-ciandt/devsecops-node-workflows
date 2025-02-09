@@ -52,10 +52,10 @@ on:
         type: string
 
       # upload_artifacts
-      job_upload_artifacts_container_runner_image:
-        description: 'Declare container runner image to steps'
-        required: true
-        type: string
+      # job_upload_artifacts_container_runner_image:
+      #   description: 'Declare container runner image to steps'
+      #   required: true
+      #   type: string
       # job_upload_artifacts_docker_registry_url:
       #   description: 'URL of the Docker registry where images are stored'
       #   required: true
