@@ -56,18 +56,18 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
-      job_upload_artifacts_docker_registry_url:
-        description: 'URL of the Docker registry where images are stored'
-        required: true
-        type: string
-      job_upload_artifacts_docker_registry_username:
-        description: 'Username for accessing the Docker registry'
-        required: true
-        type: string
-      job_upload_artifacts_docker_registry_password:
-        description: 'Password for accessing the Docker registry'
-        required: true
-        type: string
+      # job_upload_artifacts_docker_registry_url:
+      #   description: 'URL of the Docker registry where images are stored'
+      #   required: true
+      #   type: string
+      # job_upload_artifacts_docker_registry_username:
+      #   description: 'Username for accessing the Docker registry'
+      #   required: true
+      #   type: string
+      # job_upload_artifacts_docker_registry_password:
+      #   description: 'Password for accessing the Docker registry'
+      #   required: true
+      #   type: string
     
 env:
   DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
