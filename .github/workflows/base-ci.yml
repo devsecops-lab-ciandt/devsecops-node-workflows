@@ -70,7 +70,8 @@ on:
       #   type: string
     
 env:
-  DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+  TESTE_NAME: ${{ vars.TESTE_NAME }}
+  DOCKER_REGISTRY_URL: ${{ vars.DOCKER_REGISTRY_URL }}
   DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
   DOCKER_REGISTRY_REPOSITORY: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
 
@@ -85,7 +86,7 @@ jobs:
         run: | 
           env
           echo "---------------"
-          echo $DOCKER_REGISTRY_URL
+          echo Teste: $TESTE_NAME
 
   # # Workflow reference => (NodeJS) Install deps and Lint
   # install_deps:
