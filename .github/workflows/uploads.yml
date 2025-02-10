@@ -16,14 +16,6 @@ on:
         description: 'URL of the Docker registry where images are stored'
         required: true
         type: string
-      # reusable_docker_registry_username:
-      #   description: 'Username for accessing the Docker registry'
-      #   required: true
-      #   type: string
-      # reusable_docker_registry_password:
-      #   description: 'Password for accessing the Docker registry'
-      #   required: true
-      #   type: string
 
     secrets:
       reusable_docker_registry_username:
@@ -46,19 +38,13 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      - name: Validate envs
-        run: |
-          echo "teste: ${{ secrets.reusable_docker_registry_url }}"
-          echo "teste: ${{ secrets.reusable_docker_registry_username }}"
-          echo "teste: ${{ secrets.reusable_docker_registry_password }}"
-
-      # - name: Login Docker Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: ${{ inputs.reusable_docker_registry_url }}
-      #     username: ${{ inputs.reusable_docker_registry_username }}
-      #     password: ${{ inputs.reusable_docker_registry_password }}
-      #     logout: true
+      - name: Login Docker Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ inputs.reusable_docker_registry_url }}
+          username: ${{ secrets.reusable_docker_registry_username }}
+          password: ${{ secrets.reusable_docker_registry_password }}
+          logout: true
 
       - name: Load Docker image
         run: docker load -i ./image-app.tar
