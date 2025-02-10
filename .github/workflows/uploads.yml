@@ -39,9 +39,9 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      - name: Validate envs
-        run: |
-          echo "teste: ${{ secrets.DOCKER_REGISTRY_USERNAME }}"
+      # - name: Validate envs
+      #   run: |
+      #     echo "teste: ${{ secrets.DOCKER_REGISTRY_USERNAME }}"
 
       # - name: Login Docker Registry
       #   uses: docker/login-action@v3
