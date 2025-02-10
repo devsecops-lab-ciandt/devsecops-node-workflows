@@ -16,11 +16,23 @@ on:
         description: 'URL of the Docker registry where images are stored'
         required: true
         type: string
+      reusable_helm_repository_url:
+        description: 'URL of the Helm repository where images are stored'
+        required: true
+        type: string
 
     secrets:
       reusable_docker_registry_username:
+        description: 'Username for accessing the Docker registry'
         required: true
       reusable_docker_registry_password:
+        description: 'Password for accessing the Docker registry'
+        required: true
+      reusable_helm_repository_username:
+        description: 'Username for accessing the Helm repository'
+        required: true
+      reusable_helm_repository_password:
+        description: 'Password for accessing the Helm repository'
         required: true
 
 jobs:
@@ -55,35 +67,26 @@ jobs:
       - name: Tag Docker image
         run: docker tag ${{ github.repository }}:latest ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:latest
 
-      - name: Push Docker image to Nexus
+      - name: Push Docker image
         run: docker push ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:latest
       
-  # reusable_upload_helm_chart_package:
-  #   name: Upload helm chart package
-  #   runs-on: ${{ inputs.reusable_runner_name }}
-  #   container:
-  #     image: ${{ inputs.reusable_container_runner_image }}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+  reusable_upload_helm_chart_package:
+    name: Upload helm chart package
+    runs-on: ${{ inputs.reusable_runner_name }}
+    container:
+      image: ${{ inputs.reusable_container_runner_image }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Download artifact chart
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: ${{ github.run_id }}-chart-${{ github.sha }}
+      - name: Download artifact chart
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.run_id }}-chart-${{ github.sha }}
 
-  #     - name: Validate URL
-  #       run: |
-  #         URL="${{ inputs.reusable_nexus_repository_helm_url }}"
-  #         STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" "$URL")
-  #         echo "Status code: $STATUS_CODE"
-  #         if [ "$STATUS_CODE" -eq 200 ]; then
-  #           echo "Comunicação bem-sucedida!"
-  #         else
-  #           echo "Falha na comunicação. Status code: $STATUS_CODE"
-  #           exit 1
-  #           fi
+      - name: Login helm repository
+        run: |
+          echo ${{ secrets.reusable_helm_repository_password }} | helm registry login ${{ inputs.reusable_helm_repository_url }} --username ${{ secrets.reusable_helm_repository_username }} --password-stdin
 
-      # - name: Upload package to Nexus Sonatype
-      #   run: |
-      #     curl -v -u ${{ secrets.NEXUS_HELM_USERNAME }}:${{ secrets.NEXUS_HELM_PASSWORD }} --upload-file ./app-sample-0.1.0.tgz ${{ inputs.reusable_nexus_repository_helm_url }}"/app-sample-0.1.0.tgz"
+      - name: Push Helm Chart
+        run: helm push app-sample-0.1.0.tgz oci://${{ inputs.reusable_helm_repository_url }}/helm

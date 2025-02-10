@@ -60,15 +60,24 @@ on:
         description: 'URL of the Docker registry where images are stored'
         required: true
         type: string
+      job_upload_artifacts_helm_repository_url:
+        description: 'URL of the Helm repository where images are stored'
+        required: true
+        type: string
 
     secrets:
       # upload_artifacts
       job_upload_artifacts_docker_registry_username:
         description: 'Username for accessing the Docker registry'
         required: true
-
       job_upload_artifacts_docker_registry_password:
         description: 'Password for accessing the Docker registry'
+        required: true
+      job_upload_artifacts_helm_repository_username:
+        description: 'Username for accessing the Helm repository'
+        required: true
+      job_upload_artifacts_helm_repository_password:
+        description: 'Password for accessing the Helm repository'
         required: true
 
 jobs:
@@ -124,9 +133,12 @@ jobs:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_upload_artifacts_container_runner_image }}"
       reusable_docker_registry_url: "${{ inputs.job_upload_artifacts_docker_registry_url }}"
+      reusable_helm_repository_url: "${{ inputs.job_upload_artifacts_helm_repository_url }}"
     secrets:
       reusable_docker_registry_username: "${{ secrets.job_upload_artifacts_docker_registry_username }}"
       reusable_docker_registry_password: "${{ secrets.job_upload_artifacts_docker_registry_password }}"
+      reusable_helm_repository_username: "${{ secrets.job_upload_artifacts_helm_repository_username }}"
+      reusable_helm_repository_password: "${{ secrets.job_upload_artifacts_helm_repository_password }}"
     needs:
       - build_image
       - build_helm
