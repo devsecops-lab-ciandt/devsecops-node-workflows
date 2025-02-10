@@ -41,7 +41,7 @@ jobs:
 
       - name: Validate envs
         run: |
-          echo "teste: $DOCKER_REGISTRY_URL"
+          echo "teste: ${{ secrets.DOCKER_REGISTRY_USERNAME }}"
 
       # - name: Login Docker Registry
       #   uses: docker/login-action@v3

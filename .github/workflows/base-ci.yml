@@ -124,6 +124,9 @@ jobs:
       # reusable_docker_registry_url: "${{ inputs.job_upload_artifacts_docker_registry_url }}"
       # reusable_docker_registry_username: "${{ inputs.job_upload_artifacts_docker_registry_username }}"
       # reusable_docker_registry_password: "${{ inputs.job_upload_artifacts_docker_registry_password }}"
+    secrets:
+      DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+      DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
     needs:
       - build_image
       - build_helm
