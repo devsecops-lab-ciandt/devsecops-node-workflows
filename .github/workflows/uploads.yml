@@ -84,6 +84,11 @@ jobs:
         with:
           name: ${{ github.run_id }}-chart-${{ github.sha }}
 
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.16.3
+
       - name: Login helm repository
         run: |
           echo ${{ secrets.reusable_helm_repository_password }} | helm registry login ${{ inputs.reusable_helm_repository_url }} --username ${{ secrets.reusable_helm_repository_username }} --password-stdin
