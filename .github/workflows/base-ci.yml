@@ -56,6 +56,18 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
+      job_upload_artifacts_docker_registry_url:
+        description: 'URL of the Docker registry where images are stored'
+        required: true
+        type: string
+      job_upload_artifacts_docker_registry_username:
+        description: 'Username for accessing the Docker registry'
+        required: true
+        type: string
+      job_upload_artifacts_docker_registry_password:
+        description: 'Password for accessing the Docker registry'
+        required: true
+        type: string
 
 jobs:
   # Workflow reference => (NodeJS) Install deps and Lint
@@ -109,6 +121,9 @@ jobs:
     with:
       reusable_runner_name: "${{ inputs.globals_runner_name }}"
       reusable_container_runner_image: "${{ inputs.job_upload_artifacts_container_runner_image }}"
+      reusable_docker_registry_url: "${{ inputs.job_upload_artifacts_docker_registry_url }}"
+      reusable_docker_registry_username: "${{ inputs.job_upload_artifacts_docker_registry_username }}"
+      reusable_docker_registry_password: "${{ inputs.job_upload_artifacts_docker_registry_password }}"
     needs:
       - build_image
       - build_helm
