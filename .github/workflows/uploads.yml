@@ -12,10 +12,10 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
-      # reusable_docker_registry_url:
-      #   description: 'URL of the Docker registry where images are stored'
-      #   required: true
-      #   type: string
+      reusable_docker_registry_url:
+        description: 'URL of the Docker registry where images are stored'
+        required: true
+        type: string
       # reusable_docker_registry_username:
       #   description: 'Username for accessing the Docker registry'
       #   required: true
@@ -24,6 +24,13 @@ on:
       #   description: 'Password for accessing the Docker registry'
       #   required: true
       #   type: string
+
+    secrets:
+      reusable_docker_registry_username:
+        required: true
+      reusable_docker_registry_password:
+        required: true
+
 jobs:
   reusable_push_image_container:
     name: Push container image
@@ -39,9 +46,10 @@ jobs:
         with:
           name: ${{ github.run_id }}-image-${{ github.sha }}
 
-      # - name: Validate envs
-      #   run: |
-      #     echo "teste: ${{ secrets.DOCKER_REGISTRY_USERNAME }}"
+      - name: Validate envs
+        run: |
+          echo "teste: ${{ secrets.reusable_docker_registry_username }}"
+          echo "teste: ${{ secrets.reusable_docker_registry_password }}"
 
       # - name: Login Docker Registry
       #   uses: docker/login-action@v3
