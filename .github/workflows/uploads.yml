@@ -52,11 +52,11 @@ jobs:
       - name: Load Docker image
         run: docker image ls
 
-      # - name: Tag Docker image
-      #   run: docker tag ${{ github.repository }}:latest ${{ inputs.reusable_docker_registry_nexus_url }}/${{ github.repository }}:latest
+      - name: Tag Docker image
+        run: docker tag ${{ github.repository }}:latest ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:latest
 
-      # - name: Push Docker image to Nexus
-      #   run: docker push ${{ inputs.reusable_docker_registry_nexus_url }}/${{ github.repository }}:latest
+      - name: Push Docker image to Nexus
+        run: docker push ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:latest
       
   # reusable_upload_helm_chart_package:
   #   name: Upload helm chart package
