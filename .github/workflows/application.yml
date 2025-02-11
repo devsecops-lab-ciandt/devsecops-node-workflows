@@ -50,4 +50,5 @@ jobs:
         uses: azure/k8s-deploy@v4
         with:
           manifests: |
-            argocd-template/app-sample/kustomization.yaml
+            argocd-template/app-sample/project.yaml
+            argocd-template/app-sample/application.yaml
