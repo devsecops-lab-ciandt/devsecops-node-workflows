@@ -94,6 +94,6 @@ jobs:
           echo ${{ secrets.reusable_helm_repository_password }} | helm registry login ${{ inputs.reusable_helm_repository_url }} --username ${{ secrets.reusable_helm_repository_username }} --password-stdin
 
       - name: Push Helm Chart
-        run: helm push app-sample-0.1.0.tgz oci://${{ inputs.reusable_helm_repository_url }}/helm
+        run: helm push app-sample-0.1.0.tgz ${{ inputs.reusable_helm_repository_url }}/helm
     needs:
       - reusable_push_image_container
