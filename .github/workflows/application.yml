@@ -49,6 +49,7 @@ jobs:
       - name: Deploy/Update application in ArgoCD
         uses: azure/k8s-deploy@v4
         with:
+          namespace: argocd
           manifests: |
             argocd-template/app-sample/project.yaml
             argocd-template/app-sample/application.yaml

@@ -95,3 +95,5 @@ jobs:
 
       - name: Push Helm Chart
         run: helm push app-sample-0.1.0.tgz oci://${{ inputs.reusable_helm_repository_url }}/helm
+    needs:
+      - reusable_push_image_container
