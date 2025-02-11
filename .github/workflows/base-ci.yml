@@ -65,6 +65,12 @@ on:
         required: true
         type: string
 
+      # upload_application
+      job_upload_application_container_runner_image:
+        description: 'Declare container runner image to steps'
+        required: true
+        type: string
+
     secrets:
       # upload_artifacts
       job_upload_artifacts_docker_registry_username:
@@ -78,6 +84,11 @@ on:
         required: true
       job_upload_artifacts_helm_repository_password:
         description: 'Password for accessing the Helm repository'
+        required: true
+
+      # upload_application
+      job_upload_application_kube_config_data:
+        description: 'Kube Config for accessing cluster kubernetes'
         required: true
 
 jobs:
@@ -142,3 +153,15 @@ jobs:
     needs:
       - build_image
       - build_helm
+
+  # Workflow reference => (NodeJS) Update application
+  upload_application:
+    name: "DevSecOps - Upload Application ArgoCD"
+    uses: ./.github/workflows/application.yml
+    with:
+      reusable_runner_name: "${{ inputs.globals_runner_name }}"
+      reusable_container_runner_image: "${{ inputs.job_upload_application_container_runner_image }}"
+    secrets:
+      reusable_kube_config_data: "${{ secrets.job_upload_application_kube_config_data }}"
+    needs:
+      - upload_artifacts
