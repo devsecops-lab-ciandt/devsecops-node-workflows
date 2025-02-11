@@ -46,11 +46,8 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.reusable_kube_config_data }}
 
-      - name: Get pods
-        run: 'kubectl get pods -A'
-
-      # - name: Deploy/Update application in ArgoCD
-      #   uses: azure/k8s-deploy@v4
-      #   with:
-      #     manifests: |
-      #       argocd-template/app-sample/kustomization.yaml
+      - name: Deploy/Update application in ArgoCD
+        uses: azure/k8s-deploy@v4
+        with:
+          manifests: |
+            argocd-template/app-sample/kustomization.yaml
