@@ -75,7 +75,7 @@ jobs:
 
       - name: Setup version app
         run: |
-          sed 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./public/index.html
+          sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./public/index.html
 
       - name: Build (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}

@@ -41,7 +41,7 @@ jobs:
 
       - name: Setup version app
         run: |
-          sed 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./argocd-template/app-sample/application.yaml
+          sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./argocd-template/app-sample/application.yaml
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v4

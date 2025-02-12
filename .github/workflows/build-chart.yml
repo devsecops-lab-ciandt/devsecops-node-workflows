@@ -36,10 +36,7 @@ jobs:
 
       - name: Setup version app
         run: |
-          sed 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./chart-template/app-sample/Chart.yaml
-
-      - name: List version app
-        run: cat ./chart-template/app-sample/Chart.yaml
+          sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./chart-template/app-sample/Chart.yaml
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
