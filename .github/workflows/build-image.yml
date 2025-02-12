@@ -17,6 +17,10 @@ on:
         description: 'Declare the package manager as used, yarn or npm'
         required: true
         type: string
+      reusable_version_app:
+        description: 'Declare version app for build and deploy'
+        required: true
+        type: string
 
 jobs:
   # Clean and checkout repositories. Clean workspace is enabled by default
@@ -25,9 +29,6 @@ jobs:
     runs-on: ${{ inputs.reusable_runner_name }}
     container:
       image: ${{ inputs.reusable_container_runner_image }}
-    # container:
-    #   image: quay.io/buildah/stable:latest
-    #   options: --security-opt seccomp=unconfined --cap-add all
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -42,18 +43,10 @@ jobs:
           tar -xzf build.tar.gz
 
       - name: Build Docker image
-        run: docker build -t ${{ github.repository }}:latest .
+        run: docker build -t ${{ github.repository }}:${{ inputs.reusable_version_app }} .
 
       - name: Save Docker image
-        run: docker save -o image-app.tar ${{ github.repository }}:latest
-
-      # - name: Build image
-      #   run: |
-      #     buildah --storage-driver vfs bud --format docker -t ${{ github.repository }}:latest .
-
-      # - name: Save image
-      #   run: |
-      #     buildah push --storage-driver vfs localhost/${{ github.repository }}:latest oci-archive:image-app.tar
+        run: docker save -o image-app.tar ${{ github.repository }}:${{ inputs.reusable_version_app }}
 
       - name: Upload artifact image
         uses: actions/upload-artifact@v4

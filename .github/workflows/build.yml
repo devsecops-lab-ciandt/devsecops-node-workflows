@@ -25,6 +25,10 @@ on:
         description: 'Arguments of build to use'
         required: true
         type: string
+      reusable_version_app:
+        description: 'Declare version app for build and deploy'
+        required: true
+        type: string
 
 jobs:
   # Clean and checkout repositories. Clean workspace is enabled by default
@@ -68,6 +72,10 @@ jobs:
           key: ${{ github.run_id }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ github.ref }}-${{ github.run_id }}-yarn-
+
+      - name: Setup version app
+        run: |
+          sed 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./public/index.html
 
       - name: Build (npm)
         if: ${{ inputs.reusable_package_manager == 'npm' }}
