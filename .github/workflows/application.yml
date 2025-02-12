@@ -53,3 +53,5 @@ jobs:
           manifests: |
             argocd-template/app-sample/project.yaml
             argocd-template/app-sample/application.yaml
+          images: |
+            alpine:3.14
