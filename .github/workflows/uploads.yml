@@ -73,7 +73,7 @@ jobs:
         run: docker image ls
 
       - name: Tag Docker image
-        run: docker tag ${{ github.repository }}:${{ inputs.reusable_version_app }} ${{ inputs.reusable_docker_registry_url }}/images/${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
+        run: docker tag ${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }} ${{ inputs.reusable_docker_registry_url }}/images/${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
 
       - name: Push Docker image
         run: docker push ${{ inputs.reusable_docker_registry_url }}/images/${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
