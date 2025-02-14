@@ -12,6 +12,10 @@ on:
         description: 'Declare container runner image to steps'
         required: true
         type: string
+      reusable_name_app:
+        description: 'Declare name app for build and deploy'
+        required: true
+        type: string
       reusable_version_app:
         description: 'Declare version app for build and deploy'
         required: true
@@ -34,9 +38,15 @@ jobs:
           repository: devsecops-lab-ciandt/helm-charts
           path: chart-template
 
+      - name: Generate chart app
+        run: cp -rfp ./chart-template/app-sample ./chart-template/${{ inputs.reusable_name_app }}
+
       - name: Setup version app
         run: |
-          sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./chart-template/app-sample/Chart.yaml
+          sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./chart-template/${{ inputs.reusable_name_app }}/Chart.yaml
+          sed -i 's/NAME_APP/${{ inputs.reusable_name_app }}/g' ./chart-template/${{ inputs.reusable_name_app }}/Chart.yaml
+          sed -i 's/NAME_APP/${{ inputs.reusable_name_app }}/g' ./chart-template/${{ inputs.reusable_name_app }}/templates/_helpers.tpl
+          sed -i 's/NAME_APP/${{ inputs.reusable_name_app }}/g' ./chart-template/${{ inputs.reusable_name_app }}/templates/NOTES.txt
 
       - name: Set up Helm
         uses: azure/setup-helm@v4
@@ -44,14 +54,14 @@ jobs:
           version: v3.16.3
 
       - name: Helm lint
-        run: helm lint ./chart-template/app-sample
+        run: helm lint ./chart-template/${{ inputs.reusable_name_app }}
 
       - name: Package Helm chart
-        run: helm package ./chart-template/app-sample
+        run: helm package ./chart-template/${{ inputs.reusable_name_app }}
 
       - name: Upload artifact chart
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.run_id }}-chart-${{ github.sha }}
-          path: app-sample-${{ inputs.reusable_version_app }}.tgz
+          path: ${{ inputs.reusable_name_app }}-${{ inputs.reusable_version_app }}.tgz
           retention-days: 1

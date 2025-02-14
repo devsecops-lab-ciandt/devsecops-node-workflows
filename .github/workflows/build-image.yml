@@ -17,6 +17,10 @@ on:
         description: 'Declare the package manager as used, yarn or npm'
         required: true
         type: string
+      reusable_name_app:
+        description: 'Declare name app for build and deploy'
+        required: true
+        type: string
       reusable_version_app:
         description: 'Declare version app for build and deploy'
         required: true
@@ -43,10 +47,10 @@ jobs:
           tar -xzf build.tar.gz
 
       - name: Build Docker image
-        run: docker build -t ${{ github.repository }}:${{ inputs.reusable_version_app }} .
+        run: docker build -t ${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }} .
 
       - name: Save Docker image
-        run: docker save -o image-app.tar ${{ github.repository }}:${{ inputs.reusable_version_app }}
+        run: docker save -o image-app.tar ${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
 
       - name: Upload artifact image
         uses: actions/upload-artifact@v4

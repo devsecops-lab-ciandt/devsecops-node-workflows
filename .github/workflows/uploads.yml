@@ -20,6 +20,10 @@ on:
         description: 'URL of the Helm repository where images are stored'
         required: true
         type: string
+      reusable_name_app:
+        description: 'Declare name app for build and deploy'
+        required: true
+        type: string
       reusable_version_app:
         description: 'Declare version app for build and deploy'
         required: true
@@ -69,10 +73,10 @@ jobs:
         run: docker image ls
 
       - name: Tag Docker image
-        run: docker tag ${{ github.repository }}:${{ inputs.reusable_version_app }} ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:${{ inputs.reusable_version_app }}
+        run: docker tag ${{ github.repository }}:${{ inputs.reusable_version_app }} ${{ inputs.reusable_docker_registry_url }}/images/${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
 
       - name: Push Docker image
-        run: docker push ${{ inputs.reusable_docker_registry_url }}/${{ github.repository }}:${{ inputs.reusable_version_app }}
+        run: docker push ${{ inputs.reusable_docker_registry_url }}/images/${{ inputs.reusable_name_app }}:${{ inputs.reusable_version_app }}
       
   reusable_upload_helm_chart_package:
     name: Upload helm chart package
@@ -98,6 +102,6 @@ jobs:
           echo ${{ secrets.reusable_helm_repository_password }} | helm registry login ${{ inputs.reusable_helm_repository_url }} --username ${{ secrets.reusable_helm_repository_username }} --password-stdin
 
       - name: Push Helm Chart
-        run: helm push app-sample-${{ inputs.reusable_version_app }}.tgz oci://${{ inputs.reusable_helm_repository_url }}/helm
+        run: helm push ${{ inputs.reusable_name_app }}-${{ inputs.reusable_version_app }}.tgz oci://${{ inputs.reusable_helm_repository_url }}/charts
     needs:
       - reusable_push_image_container
