@@ -20,6 +20,10 @@ on:
         description: 'Declare version app for build and deploy'
         required: true
         type: string
+      reusable_stack_name:
+        description: 'Declare stack app for label in deploy'
+        required: true
+        type: string        
 
     secrets:
       reusable_kube_config_data:
@@ -47,6 +51,7 @@ jobs:
         run: |
           sed -i 's/NAME_APP/${{ inputs.reusable_name_app }}/g' ./argocd-template/app-sample/application.yaml
           sed -i 's/VERSION_APP/${{ inputs.reusable_version_app }}/g' ./argocd-template/app-sample/application.yaml
+          sed -i 's/STACK_APP/${{ inputs.reusable_stack_name }}/g' ./argocd-template/app-sample/application.yaml
 
       - name: Set up Kubernetes CLI
         uses: azure/setup-kubectl@v4

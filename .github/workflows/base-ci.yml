@@ -25,6 +25,10 @@ on:
         description: 'Declare version app for build and deploy'
         required: true
         type: string
+      globals_stack_app:
+        description: 'Declare stack app for label in deploy'
+        required: true
+        type: string
 
       # install_deps
       job_install_deps_container_runner_image:
@@ -178,6 +182,7 @@ jobs:
       reusable_container_runner_image: "${{ inputs.job_upload_application_container_runner_image }}"
       reusable_name_app: "${{ inputs.globals_name_app }}"
       reusable_version_app: "${{ inputs.globals_version_app }}"
+      reusable_stack_name: "${{ inputs.globals_stack_app }}"
     secrets:
       reusable_kube_config_data: "${{ secrets.job_upload_application_kube_config_data }}"
     needs:
